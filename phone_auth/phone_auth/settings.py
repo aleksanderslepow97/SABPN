@@ -32,12 +32,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'auth_app',
 ]
 
 MIDDLEWARE = [
@@ -75,12 +79,12 @@ WSGI_APPLICATION = "phone_auth.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-        'USER': 'your_db_user',  # Замените на ваше имя пользователя
-        'PASSWORD': 'your_db_password',  # Замените на ваш пароль
-        'HOST': 'db',  # Имя контейнера PostgreSQL
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_db_name', # Замените на ваше имя базы данных
+        'USER': 'your_db_user', # Замените на ваше имя пользователя
+        'PASSWORD': 'your_db_password', # Замените на ваш пароль
+        'HOST': 'db', # Имя контейнера PostgreSQL
         'PORT': '5432',
     }
 }
