@@ -2,27 +2,19 @@
 
 # Create your tests here.
 
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from .models import User, InviteCode
 
-class RegisterTest(APITestCase):
-    def test_register_user(self):
-        url = reverse('register')
-        data = {
-            "username": "testuser",
-            "phone_number": "+1234567890",
-            "password": "testpassword"
-        }
-        response = self.client.post(url, data, format='json')
+class UserTests(APITestCase):
+    def test_create_user(self):
+        """Тест создания пользователя."""
+        response = self.client.post('/api/users/', {'phone_number': '1234567890'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_register_user_invalid(self):
-        url = reverse('register')
-        data = {
-            "username": "testuser",
-            "phone_number": "",
-            "password": "testpassword"
-        }
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_create_invite_code(self):
+        """Тест создания инвайт-кода."""
+        self.client.post('/api/users/', {'phone_number': '1234567890'})
+        user = User.objects.first()
+        response = self.client.post('/api/invitecodes/', {'user': user.id})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

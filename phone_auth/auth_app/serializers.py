@@ -1,14 +1,16 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import User, InviteCode
 
 class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'phone_number', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+    """Сериализатор для модели пользователя."""
 
-    def create(self, validated_data):
-        user = CustomUser(**validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+    class Meta:
+        model = User
+        fields = '__all__'
+
+class InviteCodeSerializer(serializers.ModelSerializer):
+    """Сериализатор для модели инвайт-кода."""
+
+    class Meta:
+        model = InviteCode
+        fields = '__all__'
