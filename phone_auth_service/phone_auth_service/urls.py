@@ -1,5 +1,5 @@
 """
-URL configuration for phone_auth project.
+URL configuration for phone_auth_service project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -22,22 +22,21 @@ from drf_yasg import openapi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('authapp.urls')),
+    path('api/', include('users.urls')),
 ]
 
 schema_view = get_schema_view(
-    openapi.Info(
-        title="Phone Auth API",
-        default_version='v1',
-        description="API for authorization via phone number",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@phoneauth.local"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
+   openapi.Info(
+      title="Phone Auth API",
+      default_version='v1',
+      description="API для авторизации по номеру телефона",
+      contact=openapi.Contact(email="contact@phoneauth.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   patterns=urlpatterns,
+   public=True,
 )
 
 urlpatterns += [
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
