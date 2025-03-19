@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-from decouple import config
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config()
+SECRET_KEY = "django-insecure-0x3ai&tso4@@j+g-8lgwl^qig7-61gr@q&!)*_fvd2lk(9wf+4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config()
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
+    'users'
+    'frontend'
 ]
 
 MIDDLEWARE = [
@@ -76,12 +80,12 @@ WSGI_APPLICATION = "phone_auth_service.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config().split('/')[-1],
-        'USER': config().split(':')[1].split('//')[1],
-        'PASSWORD': config().split(':')[2].split('@')[0],
-        'HOST': config().split('@')[1].split(':')[0],
-        'PORT': config().split(':')[-1],
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('django_project'),
+        'USER': os.getenv('postgres'),
+        'PASSWORD': os.getenv('1613'),
+        'HOST': os.getenv('localhost'),
+        'PORT': os.getenv('5432'),
     }
 }
 
@@ -126,3 +130,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование API</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Тестирование API авторизации</h1>
+    <div>
+        <h2>Создать пользователя</h2>
+        <input type="text" id="phone_number" placeholder="Введите номер телефона">
+        <button id="create_user">Создать</button>
+    </div>
+    <div>
+        <h2>Получить пользователя</h2>
+        <input type="text" id="user_id" placeholder="Введите ID пользователя">
+        <button id="get_user">Получить</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#create_user').click(function() {
+                const phone_number = $('#phone_number').val();
+                $.post('/api/users/', { phone_number: phone_number }, function(data) {
+                    $('#result').html('Создан пользователь: ' + JSON.stringify(data));
+                });
+            });
+
+            $('#get_user').click(function() {
+                const user_id = $('#user_id').val();
+                $.get('/api/users/' + user_id + '/', function(data) {
+                    $('#result').html('Данные пользователя: ' + JSON.stringify(data));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
