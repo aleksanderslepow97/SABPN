@@ -6,7 +6,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path('', views. Home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
@@ -27,17 +27,19 @@ urlpatterns = [
 ]
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Phone Auth API",
-      default_version='v1',
-      description="API для авторизации по номеру телефона",
-      contact=openapi.Contact(email="contact@phoneauth.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   patterns=urlpatterns,
-   public=True,
+    openapi.Info(
+        title="Phone Auth API",
+        default_version='v1',
+        description="API для авторизации по номеру телефона",
+        contact=openapi.Contact(email="contact@phoneauth.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    patterns=urlpatterns,
+    public=True,
 )
 
 urlpatterns += [
-   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('admin/', admin.site.urls),
+    path('', include('auth_service.urls')),  # Подключение URL-адресов приложения
 ]

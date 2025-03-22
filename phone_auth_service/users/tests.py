@@ -35,7 +35,7 @@ class InviteModelTest(TestCase):
 
     def test_list_users_by_invite_code(self):
         """Проверка успешного получения пользователей по инвайт-коду."""
-        user = User.objects.create(phone_number='1234567890', invite_code='INVITE123')
+        User.objects.create(phone_number='1234567890', invite_code='INVITE123')
         response = self.client.get('/api/invites/INVITE123/users/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
