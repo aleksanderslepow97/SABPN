@@ -22,7 +22,7 @@ from drf_yasg import openapi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('frontend/', include('frontend.urls')),
+    path('frontend/', include('users.urls')),
     path('api/', include('users.urls')),
 ]
 
@@ -41,5 +41,5 @@ schema_view = get_schema_view(
 urlpatterns += [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
-    path('', include('auth_service.urls')),  # Подключение URL-адресов приложения
+    path('', include('users.urls')),  # Подключение URL-адресов приложения
 ]
