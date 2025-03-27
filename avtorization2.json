@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Сервис авторизации по номеру телефона",
+    "description": "API для авторизации пользователей по номеру телефона",
+    "contact": {
+      "name": "Поддержка сервиса",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "post": {
+        "summary": "Авторизация по номеру телефона",
+        "operationId": "authorizeByPhoneNumber",
+        "requestBody": {
+          "description": "Номер телефона пользователя",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhoneNumber"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Успешная авторизация",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Неверный номер телефона или пользователь не найден"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PhoneNumber": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "format": "phone",
+            "example": "+79053083127"
+          }
+        },
+        "required": ["phoneNumber"]
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Токен доступа",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "description": "Время жизни токена в секундах",
+            "example": 3600
+          }
+        },
+        "required": ["token", "expiresIn"]
+      }
+    }
+  }
+}
