@@ -19,17 +19,16 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.urls import re_path
+from rest_framework import permissions
 
-# from django_swagger_ui.views import get_swagger_ui_view
 
 schema_url = 'avtorization2.json'
-# swagger_ui_view = swagger_ui_view(schema_url)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('frontend/', include('users.urls')),
     path('api/', include('users.urls')),
-    #    path('swagger/', swagger_ui_view),
 ]
 
 schema_view = get_schema_view(
