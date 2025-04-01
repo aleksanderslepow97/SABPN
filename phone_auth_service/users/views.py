@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 
 from .models import User, Invite
 from .serializers import UserSerializer, InviteSerializer
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
@@ -36,22 +36,18 @@ def generate_invite_code():
 
 class InviteViewSet(viewsets.ModelViewSet):
     """Представление для работы с инвайтами."""
-    queryset = Invite.objects.all()
-    serializer_class = InviteSerializer
-    permission_classes = [IsAuthenticated]
+
+    @action(detail=True, methods=['get'], url_path='users')
+    def list_users(self, request, pk=None):
+        invite = self.get_object()
+        users = User.objects.filter(invited_by=invite.code)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         """Создание пользователя по номеру телефона."""
         code = generate_invite_code()
         serializer.save(code=code)
-
-
-@action(detail=True, methods=['get'], url_path='users')
-def list_users(self, request, pk=None):
-    invite = self.get_object()
-    users = User.objects.filter(invited_by=invite.code)
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
 
 
 def index(request):
