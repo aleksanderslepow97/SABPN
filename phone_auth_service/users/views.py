@@ -1,5 +1,8 @@
 # Create your views here.
-from rest_framework import viewsets
+from requests import Response
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+
 from .models import User, Invite
 from .serializers import UserSerializer, InviteSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +15,16 @@ class UserViewSet(viewsets.ModelViewSet):
     """Представление для работы с пользователями."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        phone_number = request.data.get('phone')
+        if phone_number and User.objects.filter(phone=phone_number).exists():
+            return Response(
+                {"error": "User with this phone already exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super().create(request, *args, **kwargs)
 
 
 def generate_invite_code():
@@ -32,6 +44,14 @@ class InviteViewSet(viewsets.ModelViewSet):
         """Создание пользователя по номеру телефона."""
         code = generate_invite_code()
         serializer.save(code=code)
+
+
+@action(detail=True, methods=['get'], url_path='users')
+def list_users(self, request, pk=None):
+    invite = self.get_object()
+    users = User.objects.filter(invited_by=invite.code)
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
 
 
 def index(request):
