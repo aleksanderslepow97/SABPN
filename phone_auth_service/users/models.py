@@ -10,7 +10,7 @@ class User(AbstractUser):
         phone_number (CharField): Номер телефона пользователя, должен быть уникальным.
         invite_code (CharField): Код приглашения, связанный с пользователем.
     """
-    objects = None
+    # objects = None
     phone_number = models.CharField(max_length=15, unique=True, verbose_name="Номер телефона")
     invite_code = models.CharField(max_length=10, unique=True, verbose_name="Инвайт-код")
 

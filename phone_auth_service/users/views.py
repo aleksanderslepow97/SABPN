@@ -2,10 +2,11 @@
 from requests import Response
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
+# from rest_framework.permissions import IsAuthenticated
 
 from .models import User, Invite
 from .serializers import UserSerializer, InviteSerializer
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
@@ -36,6 +37,9 @@ def generate_invite_code():
 
 class InviteViewSet(viewsets.ModelViewSet):
     """Представление для работы с инвайтами."""
+    queryset = Invite.objects.all()
+    serializer_class = InviteSerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail=True, methods=['get'], url_path='users')
     def list_users(self, request, pk=None):
