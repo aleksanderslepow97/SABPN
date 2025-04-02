@@ -9,7 +9,7 @@ from rest_framework.test import APITestCase
 class UserModelTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user_data = {'phone_number': '1234567890'}
+        self.user_data = {'phone_number': '1234567890', "invite_code": "test_code"}
 
     def test_user_creation(self):
         """Проверка успешного создания пользователя."""
